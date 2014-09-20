@@ -50,6 +50,11 @@ public:
         roll_w = static_cast<int>((roll + (float)M_PI)/(M_PI * 2.0f) * 18);
         pitch_w = static_cast<int>((pitch + (float)M_PI/2.0f)/M_PI * 18);
         yaw_w = static_cast<int>((yaw + (float)M_PI)/(M_PI * 2.0f) * 18);
+
+        // Convert the floating point angles in radians to a scale from 0 to 20.
+        roll_f = static_cast<int>((roll + (float)M_PI)/(M_PI * 2.0f) * 100);
+        pitch_f = static_cast<int>((pitch + (float)M_PI/2.0f)/M_PI * 100);
+        yaw_f = static_cast<int>((yaw + (float)M_PI)/(M_PI * 2.0f) * 100);
     }
 
     // onPose() is called whenever the Myo detects that the person wearing it has changed their pose, for example,
@@ -90,9 +95,9 @@ public:
         std::cout << '\r';
 
         // Print out the orientation. Orientation data is always available, even if no arm is currently recognized.
-        std::cout << '[' << std::string(roll_w, '*') << std::string(18 - roll_w, ' ') << ']'
-                  << '[' << std::string(pitch_w, '*') << std::string(18 - pitch_w, ' ') << ']'
-                  << '[' << std::string(yaw_w, '*') << std::string(18 - yaw_w, ' ') << ']';
+        std::cout << '[' << std::string(roll_w, '*') << std::string(18 - roll_w, ' ') << roll_f <<']'
+                  << '[' << std::string(pitch_w, '*') << std::string(18 - pitch_w, ' ') << pitch_f << ']'
+                  << '[' << std::string(yaw_w, '*') << std::string(18 - yaw_w, ' ') << yaw_f << ']';
 
         if (onArm) {
             // Print out the currently recognized pose and which arm Myo is being worn on.
@@ -118,6 +123,9 @@ public:
 
     // These values are set by onOrientationData() and onPose() above.
     int roll_w, pitch_w, yaw_w;
+
+    // These values are set by onOrientationData() and onPose() above.
+    int roll_f, pitch_f, yaw_f;
     myo::Pose currentPose;
 };
 
@@ -125,7 +133,7 @@ int main(int argc, char** argv)
 {
     // We catch any exceptions that might occur below -- see the catch statement for more details.
     try {
-
+    
     // First, we create a Hub with our application identifier. Be sure not to use the com.example namespace when
     // publishing your application. The Hub provides access to one or more Myos.
     myo::Hub hub("com.example.hello-myo");
@@ -144,7 +152,7 @@ int main(int argc, char** argv)
     }
 
     // We've found a Myo.
-    std::cout << "Connected to a Myo armband!" << std::endl << std::endl;
+    std::cout << "Connected to a Myo armband!!!!!!!!!!!!" << std::endl << std::endl;
 
     // Next we construct an instance of our DeviceListener, so that we can register it with the Hub.
     DataCollector collector;
